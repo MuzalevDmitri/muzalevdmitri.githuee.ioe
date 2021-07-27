@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<title>Test-3</title>
+	<link rel="shortcut icon" href="/favicon.ico" />	
+	<link rel="Stylesheet" type="text/css" href="css/smoothDivScroll.css" />
+
+
+
+</head>
+
+<body>
+<div class="box">
+
+
+
+<header>
+	<img src="img/image-3.png" alt="">
+</header>
+	<div class="foo" data-delighter>
+
+	<div data-delighter class="block-one right" >
+		<div class="lable">
+			<h3>01</h3>
+			<h1>brand</h1>
+
+		</div>
+
+	<div id="makeMeScrollable-one">
+		<img src="images/images-slide/1.png" id="1"/>
+		<img src="images/images-slide/2.png" id="2"/>
+		<img src="images/images-slide/3.png" id="3"/>
+
+
+	</div>
+	</div>
+	</div>
+
+	<div class="foo-left" data-delighter>
+
+	<div class="block-two">
+		<div class="lable-left">
+			<h3>02</h3>
+
+			<h1>Content<br> production</h1>
+
+		</div>
+
+
+		<div id="makeMeScrollable-two">
+			<img src="images/images-slide/4.png" id="4"/>
+			<img src="images/images-slide/5.png" id="5"/>
+			<img src="images/images-slide/6.png" id="6"/>
+			<img src="images/images-slide/7.png" id="7"/>
+			<img src="images/images-slide/8.png" id="8"/>
+			<img src="images/images-slide/9.png" id="9"/>
+			<img src="images/images-slide/16.png" id="16"/>
+			<img src="images/images-slide/17.png" id="17"/>
+		</div>
+	</div>
+
+		<div class="foo" data-delighter>
+	<div class="block-one">
+		<div class="lable">
+			<h3>03</h3>
+			<h1>Digital</h1>
+
+		</div>
+
+	</div>
+		<div id="makeMeScrollable-three">
+			<img src="images/images-slide/12.png" id="12"/>
+			<img src="images/images-slide/13.png" id="13"/>
+			<img src="images/images-slide/14.png" id="14"/>
+			<img src="images/images-slide/15.png" id="15"/>
+			<img src="images/images-slide/10.png" id="10"/>
+			<img src="images/images-slide/11.png" id="11"/>
+
+
+		</div>
+	</div>
+
+</div>
+</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript"></script>
+
+
+	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+	
+
+	<script src="js/jquery.mousewheel.min.js" type="text/javascript"></script>
+
+	<script src="js/jquery.kinetic.js" type="text/javascript"></script>
+
+	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
+
+
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#makeMeScrollable-one").smoothDivScroll({
+				touchScrolling: true,
+				manualContinuousScrolling: true,
+				hotSpotScrolling: true,
+				mousewheelScrolling: true
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#makeMeScrollable-two").smoothDivScroll({
+				touchScrolling: true,
+				manualContinuousScrolling: true,
+				hotSpotScrolling: true,
+				mousewheelScrolling: false
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#makeMeScrollable-three").smoothDivScroll({
+				touchScrolling: true,
+				manualContinuousScrolling: true,
+				hotSpotScrolling: true,
+				mousewheelScrolling: false
+			});
+		});
+	</script>
+
+<script>
+	var Delighters = new (function() {
+		var self = this,
+				dels = this.dels = [],
+
+				// default options
+				options = {
+					attribute: 	'data-delighter',
+					classNames: ['delighter', 'started', 'ended'],
+					start: 			0.75,
+					end: 				0.75,
+					autoInit: 	true
+				};
+
+		document.addEventListener("DOMContentLoaded", function() {
+			if (options.autoInit) init();
+		});
+
+		function config(opts) {
+			for (var name in opts) options[name] = opts[name];
+		}
+
+		function init() {
+			document.addEventListener('scroll', scroll)
+			var els = document.querySelectorAll('[' + options.attribute + ']');
+
+			for (var i=0; i<els.length; i++) {
+				var el 			= els[i],
+						def 		= el.getAttribute(options.attribute, 2),
+						pairs 	= def.split(';'),
+						del 		= {};
+				del.start = options.start;
+				del.end = options.end;
+
+				for (var j=0; j<pairs.length; j++) {
+					var pair 	= pairs[j].split(':'),
+							name 	= pair[0],
+							val 	= isNaN(pair[1] * 1)? pair[1] : pair[1] * 1;
+					if (name) del[name] = (val === undefined)? true : val;
+				}
+
+				del.el = el;
+				del.id = dels.length;
+				dels.push(del);
+				el.classList.add(options.classNames[0])
+				if (del.debug) el.style.outline = 'solid red 4px';
+			}
+			scroll();
+		}
+
+		function scroll() {
+			var viewportHeight = window.innerHeight;
+			for (var i=0; i<dels.length; i++) {
+				var del = dels[i],
+						box = del.el.getBoundingClientRect(),
+						factorStart = box.top / viewportHeight,
+						factorEnd = box.bottom / viewportHeight;
+
+				if (del.debug) {
+					if (factorStart >= 0 && factorStart <= 1) {
+						if (!del.startLine) {
+							del.startLine = document.createElement('div')
+							document.body.appendChild(del.startLine);
+							del.startLine.style = 'position:fixed;height:0;width:100%;border-bottom:dotted red 2px;top:' + (del.start * 100) + 'vh';
+						}
+					}
+					if (((factorEnd < del.end) || (factorStart > 1)) && del.startLine) {
+						del.startLine.parentNode.removeChild(del.startLine);
+						delete del.startLine;
+					}
+				}
+				if (factorStart < del.start && !del.started) {
+					del.started = true;
+					del.el.classList.add(options.classNames[1])
+				}
+				else if (factorStart > del.start && del.started) {
+					del.started = false;
+					del.el.classList.remove(options.classNames[1])
+				}
+				if (factorEnd < del.end && !del.ended) {
+					del.ended = true;
+					del.el.classList.add(options.classNames[2])
+				}
+				else if (factorEnd > del.end && del.ended) {
+					del.ended = false;
+					del.el.classList.remove(options.classNames[2])
+				}
+			}
+		}
+
+		self.init = init;
+		self.config = config;
+	})();
+</script>
+</body>
+</html>
